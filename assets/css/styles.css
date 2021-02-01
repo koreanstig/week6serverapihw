@@ -1,0 +1,36 @@
+.heading {
+    background-color: rgb(68, 68, 68);
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}
+
+.btn {
+    height: 2.5rem;
+}
+
+.fiveday {
+    margin-top: 1rem;
+}
+
+.forecast {
+    background-color: rgb(57, 144, 226);
+    margin-right: 1rem;
+    height: 12rem;
+    border-radius: .25rem;
+}
+
+#prevSearch {
+    margin-right: 1rem;
+}
+
+.blueCard {
+    padding-left: 0%;
+    padding-top: .75rem;
+}
+
+.whiteText {
+    color: white;
+}
