@@ -32,16 +32,16 @@
                     <h5>Search for a City:</h5>
                     <div class="input-group">
                         <div class="form-outline">
-                            <input type="search" id="form1" class="form-control" />
+                            <input type="search" id="form1" class="form-control" placeholder="Enter a city"/>
                             <label class="form-label" for="form1"></label>
                         </div>
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" id="searchBtn">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </div>
                 <!-- previous search -->
-                <div class="row">
+                <div class="row" id="prevSearches">
                     <h6>Previous Searches</h6>
                     <div class="card w-100" id="prevSearch">
                         <div class="card-body">
@@ -61,11 +61,11 @@
                 <div class="row">
                     <div class="card w-100">
                         <div class="card-body">
-                            <h3 class="card-title">Current City</h3>
-                            <p class="card-text currentCityRow">Temperature: </p>
-                            <p class="card-text currentCityRow">Humidity: </p>
-                            <p class="card-text currentCityRow">Wind Speed: </p>
-                            <p class="card-text currentCityRow">UV Index: </p>
+                            <h3 class="card-title" id="currentCity">Current City</h3>
+                            <p class="card-text currentCityRow" id="currentCityTemp">Temperature: </p>
+                            <p class="card-text currentCityRow" id="currentCityHumidity">Humidity: </p>
+                            <p class="card-text currentCityRow" id="currentCityWind">Wind Speed: </p>
+                            <p class="card-text currentCityRow" id="currentCityUV">UV Index: </p>
                         </div>
                     </div>
                 </div>
