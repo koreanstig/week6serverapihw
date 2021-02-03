@@ -21,9 +21,18 @@ function currentCityApi() {
                 console.log(response);
                 response.json().then(function(data){
                     console.log(data);
+                    // using the data from the first api URL, we can find the UV data and add it with the other info
                     var lat = data.coord.lat;
                     var lon = data.coord.lon;
                     var requestUVUrl = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+                    // var for the date
+                    var timestamp = data.dt;
+                    var date = new Date(timestamp *1000).toLocaleDateString("en-US");
+                    // var link for 5 day
+                    var request5dayUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + value +"&appid=" + apiKey;
+                    var currentIcon = data.weather[0].icon;
+                    console.log(currentIcon);
+                    // fetch to get UV
                     fetch(requestUVUrl) 
                         .then(function(response2){
                             if (response2.ok) {
@@ -36,10 +45,21 @@ function currentCityApi() {
                                 return
                             };
                         });
-                    currentCity.textContent = data.name;
+                    // change texts to show proper data
+                    currentCity.innerHTML = data.name + " (" + date + ") " + "<img src='http://openweathermap.org/img/w/" + currentIcon + ".png'></img>";
+                    // currentCity.textContent = data.name + " (" + date + ") ";
                     currentCityTemp.textContent = "Temperature: " + data.main.temp + " *F";
                     currentCityHumidity.textContent = "Humidity: " + data.main.humidity + "%";
-                    currentCityWind.textContent = "Wind Speed: " + data.wind.speed + " MPH";    
+                    currentCityWind.textContent = "Wind Speed: " + data.wind.speed + " MPH"; 
+                    // fetch to get 5 day
+                    fetch(request5dayUrl)
+                        .then(function(response3) {
+                            if (response3.ok) {
+                                response3.json().then(function(data){
+                                    console.log(data);
+                                })
+                            }
+                        })
                 });
             }
             else {
