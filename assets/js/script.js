@@ -14,30 +14,25 @@ var prevCityArr = [];
 function currentCityApi() {
     var value = encodeURIComponent(localStorage.getItem("value"));
     var requestUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + value + "&appid=" + apiKey + "&units=imperial";
-    console.log(requestUrl);
     fetch(requestUrl)
         .then(function(response){
             if (response.ok){
-                console.log(response);
                 response.json().then(function(data){
-                    console.log(data);
                     // using the data from the first api URL, we can find the UV data and add it with the other info
                     var lat = data.coord.lat;
                     var lon = data.coord.lon;
                     var requestUVUrl = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
                     // var for the date
                     var timestamp = data.dt;
-                    var date = new Date(timestamp *1000).toLocaleDateString("en-US");
+                    var date = new Date(timestamp * 1000).toLocaleDateString("en-US");
                     // var link for 5 day
-                    var request5dayUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + value +"&appid=" + apiKey;
+                    var request5dayUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + value + "&units=imperial" + "&appid=" + apiKey;
                     var currentIcon = data.weather[0].icon;
-                    console.log(currentIcon);
                     // fetch to get UV
                     fetch(requestUVUrl) 
                         .then(function(response2){
                             if (response2.ok) {
                                 response2.json().then(function(data){
-                                    console.log(data);
                                     currentCityUV.textContent = "UV Index: " + data.value;
                                 })
                             }
@@ -56,9 +51,33 @@ function currentCityApi() {
                         .then(function(response3) {
                             if (response3.ok) {
                                 response3.json().then(function(data){
-                                    console.log(data);
+                                    // var day1Timestamp = timestamp + 86400;
+                                    // var day1Time = new Date(day1Timestamp * 1000).toLocaleDateString("en-US");
+                                    // // variables for 5 day
+                                    // var day1Date = document.getElementById("day1Date");
+                                    // var day1Icon = document.getElementById("day1Icon");
+                                    // var day1Temp = document.getElementById("day1Temp");
+                                    // var day1Humid = document.getElementById("day1Humid");
+                                    // day1Date.textContent = day1Time;
+                                    var daysArr = [];
+                                    var searchField = "dt";
+                                    var searchVal = (timestamp + 86400).toString();
+                                    var val = searchVal.replaceAt(8, "00");
+                                    console.log();
+                                    console.log(searchVal[8]);
+                                    // console.log(data);
+                                    console.log(data.list[0].dt);
+                                    for (i=0;i<data.list.length;i++){
+                                        if(data.list[i].dt == searchVal){
+                                            daysArr.push(data.list[i])
+                                            console.log(daysArr);
+                                        }
+                                    }
                                 })
                             }
+                            else {
+                                return
+                            };
                         })
                 });
             }
@@ -73,7 +92,7 @@ searchBtn.addEventListener('click', function(event){
     var value = cityInput.value;
     localStorage.setItem("value", value);
     prevCityArr.push(value);
-    console.log(prevCityArr);
+    // console.log(prevCityArr);
     currentCityApi();
 })
 
