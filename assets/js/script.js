@@ -109,33 +109,31 @@ searchBtn.addEventListener('click', function(event){
     event.preventDefault();
     var value = cityInput.value;
     localStorage.setItem("value", value);
-    if(value === ""){
-        alert('Please enter a valid city name')
-    } else {
-        prevCityArr.push(value);
-    }
+    prevCityArr.push(value);
+    // if(value === ""){
+    //     alert('Please enter a valid city name')
+    // } else {
+    //     prevCityArr.push(value);
+    // }
     console.log(prevCityArr);
     currentCityApi();
+    
     prevSearch();
 })
 
 // var displayPrevSearches = function 
 function prevSearch() {
+    prevSearches.innerHTML = "";
     var noCitySearch = document.getElementById("noCitySearch");
     if (prevCityArr.length === 0){
         noCitySearch.textContent = 'No previous searched cities.';
+        prevCityArr = [];
     } else{
         for (var i=0;i<prevCityArr.length;i++){
             var createCard = document.createElement('div');
-            createCard.classList = "card w-100";
-            createCard.innerHTML = "<div class='card-body'><p class='card-text btn'>" + noCitySearch[i] + "</p></div>"
+            createCard.classList = "card w-100 prevSearch";
+            createCard.innerHTML = "<div class='card-body'><p class='card-text btn'>" + prevCityArr[i].toUpperCase() + "</p></div>"
             prevSearches.appendChild(createCard);
         }
     }
 }
-
-// <div class="card w-100" id="prevSearch">
-//     <div class="card-body">
-//         <p class="card-text btn" id="noCitySearch">No previously searched city.</p>
-//     </div>
-// </div>
