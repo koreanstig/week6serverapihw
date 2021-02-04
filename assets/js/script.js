@@ -30,7 +30,6 @@ function currentCityApi() {
                         .then(function(response2){
                             if (response2.ok) {
                                 response2.json().then(function(data){
-                                    console.log(data);
                                     currentCityUV.textContent = "UV Index: " + data.current.uvi;
                                     var day1Time = new Date((timestamp+86400) * 1000).toLocaleDateString("en-US");
                                     var icon1 = data.daily[1].weather[0].icon;
@@ -110,9 +109,33 @@ searchBtn.addEventListener('click', function(event){
     event.preventDefault();
     var value = cityInput.value;
     localStorage.setItem("value", value);
-    prevCityArr.push(value);
-    // console.log(prevCityArr);
+    if(value === ""){
+        alert('Please enter a valid city name')
+    } else {
+        prevCityArr.push(value);
+    }
+    console.log(prevCityArr);
     currentCityApi();
+    prevSearch();
 })
 
 // var displayPrevSearches = function 
+function prevSearch() {
+    var noCitySearch = document.getElementById("noCitySearch");
+    if (prevCityArr.length === 0){
+        noCitySearch.textContent = 'No previous searched cities.';
+    } else{
+        for (var i=0;i<prevCityArr.length;i++){
+            var createCard = document.createElement('div');
+            createCard.classList = "card w-100";
+            createCard.innerHTML = "<div class='card-body'><p class='card-text btn'>" + noCitySearch[i] + "</p></div>"
+            prevSearches.appendChild(createCard);
+        }
+    }
+}
+
+// <div class="card w-100" id="prevSearch">
+//     <div class="card-body">
+//         <p class="card-text btn" id="noCitySearch">No previously searched city.</p>
+//     </div>
+// </div>
