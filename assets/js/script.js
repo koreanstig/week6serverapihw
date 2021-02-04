@@ -1,7 +1,7 @@
 var apiKey = "f2117d65263053ab1dd5f89a222f10c1";
 var searchBtn = document.getElementById("searchBtn");
 var cityInput = document.getElementById("form1")
-// variables for the current city
+// variables for the current cityls
 var currentCity = document.getElementById("currentCity");
 var currentCityTemp = document.getElementById("currentCityTemp");
 var currentCityHumidity = document.getElementById("currentCityHumidity");
@@ -21,19 +21,72 @@ function currentCityApi() {
                     // using the data from the first api URL, we can find the UV data and add it with the other info
                     var lat = data.coord.lat;
                     var lon = data.coord.lon;
-                    var requestUVUrl = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+                    var requestOneCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + apiKey;
                     // var for the date
                     var timestamp = data.dt;
                     var date = new Date(timestamp * 1000).toLocaleDateString("en-US");
-                    // var link for 5 day
-                    var request5dayUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + value + "&units=imperial" + "&appid=" + apiKey;
                     var currentIcon = data.weather[0].icon;
-                    // fetch to get UV
-                    fetch(requestUVUrl) 
+                    fetch(requestOneCall) 
                         .then(function(response2){
                             if (response2.ok) {
                                 response2.json().then(function(data){
-                                    currentCityUV.textContent = "UV Index: " + data.value;
+                                    console.log(data);
+                                    currentCityUV.textContent = "UV Index: " + data.current.uvi;
+                                    var day1Time = new Date((timestamp+86400) * 1000).toLocaleDateString("en-US");
+                                    var icon1 = data.daily[1].weather[0].icon;
+                                    // day 1
+                                    var day1Date = document.getElementById("day1Date");
+                                    var day1Icon = document.getElementById("day1Icon");
+                                    var day1Temp = document.getElementById("day1Temp");
+                                    var day1Humid = document.getElementById("day1Humid");
+                                    day1Date.textContent = day1Time;
+                                    day1Icon.src = 'http://openweathermap.org/img/w/' + icon1 + ".png";
+                                    day1Temp.textContent = "Temp: " + data.daily[1].temp.day + " *F";
+                                    day1Humid.textContent = "Humidity: " + data.daily[1].humidity + "%";
+                                    // day 2
+                                    var day2Time = new Date((timestamp+(86400*2)) * 1000).toLocaleDateString("en-US");
+                                    var icon2 = data.daily[2].weather[0].icon;
+                                    var day2Date = document.getElementById("day2Date");
+                                    var day2Icon = document.getElementById("day2Icon");
+                                    var day2Temp = document.getElementById("day2Temp");
+                                    var day2Humid = document.getElementById("day2Humid");
+                                    day2Date.textContent = day2Time;
+                                    day2Icon.src = 'http://openweathermap.org/img/w/' + icon2 + ".png";
+                                    day2Temp.textContent = "Temp: " + data.daily[2].temp.day + " *F";
+                                    day2Humid.textContent = "Humidity: " + data.daily[2].humidity + "%";
+                                    // day 3
+                                    var day3Time = new Date((timestamp+(86400*3)) * 1000).toLocaleDateString("en-US");
+                                    var icon3 = data.daily[3].weather[0].icon;
+                                    var day3Date = document.getElementById("day3Date");
+                                    var day3Icon = document.getElementById("day3Icon");
+                                    var day3Temp = document.getElementById("day3Temp");
+                                    var day3Humid = document.getElementById("day3Humid");
+                                    day3Date.textContent = day3Time;
+                                    day3Icon.src = 'http://openweathermap.org/img/w/' + icon3 + ".png";
+                                    day3Temp.textContent = "Temp: " + data.daily[3].temp.day + " *F";
+                                    day3Humid.textContent = "Humidity: " + data.daily[3].humidity + "%";
+                                    // day 4
+                                    var day4Time = new Date((timestamp+(86400*4)) * 1000).toLocaleDateString("en-US");
+                                    var icon4 = data.daily[4].weather[0].icon;
+                                    var day4Date = document.getElementById("day4Date");
+                                    var day4Icon = document.getElementById("day4Icon");
+                                    var day4Temp = document.getElementById("day4Temp");
+                                    var day4Humid = document.getElementById("day4Humid");
+                                    day4Date.textContent = day4Time;
+                                    day4Icon.src = 'http://openweathermap.org/img/w/' + icon4 + ".png";
+                                    day4Temp.textContent = "Temp: " + data.daily[4].temp.day + " *F";
+                                    day4Humid.textContent = "Humidity: " + data.daily[4].humidity + "%";
+                                    // day 5
+                                    var day5Time = new Date((timestamp+(86400*5)) * 1000).toLocaleDateString("en-US");
+                                    var icon5 = data.daily[5].weather[0].icon;
+                                    var day5Date = document.getElementById("day5Date");
+                                    var day5Icon = document.getElementById("day5Icon");
+                                    var day5Temp = document.getElementById("day5Temp");
+                                    var day5Humid = document.getElementById("day5Humid");
+                                    day5Date.textContent = day5Time;
+                                    day5Icon.src = 'http://openweathermap.org/img/w/' + icon5 + ".png";
+                                    day5Temp.textContent = "Temp: " + data.daily[5].temp.day + " *F";
+                                    day5Humid.textContent = "Humidity: " + data.daily[5].humidity + "%";
                                 })
                             }
                             else {
@@ -42,43 +95,9 @@ function currentCityApi() {
                         });
                     // change texts to show proper data
                     currentCity.innerHTML = data.name + " (" + date + ") " + "<img src='http://openweathermap.org/img/w/" + currentIcon + ".png'></img>";
-                    // currentCity.textContent = data.name + " (" + date + ") ";
                     currentCityTemp.textContent = "Temperature: " + data.main.temp + " *F";
                     currentCityHumidity.textContent = "Humidity: " + data.main.humidity + "%";
                     currentCityWind.textContent = "Wind Speed: " + data.wind.speed + " MPH"; 
-                    // fetch to get 5 day
-                    fetch(request5dayUrl)
-                        .then(function(response3) {
-                            if (response3.ok) {
-                                response3.json().then(function(data){
-                                    // var day1Timestamp = timestamp + 86400;
-                                    // var day1Time = new Date(day1Timestamp * 1000).toLocaleDateString("en-US");
-                                    // // variables for 5 day
-                                    // var day1Date = document.getElementById("day1Date");
-                                    // var day1Icon = document.getElementById("day1Icon");
-                                    // var day1Temp = document.getElementById("day1Temp");
-                                    // var day1Humid = document.getElementById("day1Humid");
-                                    // day1Date.textContent = day1Time;
-                                    var daysArr = [];
-                                    var searchField = "dt";
-                                    var searchVal = (timestamp + 86400).toString();
-                                    var val = searchVal.replaceAt(8, "00");
-                                    console.log();
-                                    console.log(searchVal[8]);
-                                    // console.log(data);
-                                    console.log(data.list[0].dt);
-                                    for (i=0;i<data.list.length;i++){
-                                        if(data.list[i].dt == searchVal){
-                                            daysArr.push(data.list[i])
-                                            console.log(daysArr);
-                                        }
-                                    }
-                                })
-                            }
-                            else {
-                                return
-                            };
-                        })
                 });
             }
             else {
