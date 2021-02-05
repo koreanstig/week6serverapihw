@@ -19,6 +19,8 @@ function currentCityApi() {
         .then(function(response){
             if (response.ok){
                 response.json().then(function(data){
+                    prevCityArr.push(decodeURIComponent(value));
+                    console.log(prevCityArr);
                     // using the data from the first api URL, we can find the UV data and add it with the other info
                     var lat = data.coord.lat;
                     var lon = data.coord.lon;
@@ -27,14 +29,44 @@ function currentCityApi() {
                     var timestamp = data.dt;
                     var date = new Date(timestamp * 1000).toLocaleDateString("en-US");
                     var currentIcon = data.weather[0].icon;
+                    // this is to create a new element and add it into the previous searches so long as the response is ok
+                    prevSearches.innerHTML = "";
+                    for (var i=0;i<prevCityArr.length;i++){
+                        var createCard = document.createElement('div');
+                        createCard.classList = "card w-100 prevSearch " + prevCityArr[i];
+                        createCard.innerHTML = "<div class='card-body'><textarea class='card-text btn'>" + prevCityArr[i].toUpperCase() + "</textarea></div>"
+                        prevSearches.appendChild(createCard);
+                        // this is when you click on the previous city, it repopulates
+                        var newCityBtn = document.querySelector("." + prevCityArr[i])
+                        console.log(newCityBtn);
+                        newCityBtn.addEventListener('click', function(event){
+                            event.preventDefault();
+                            button = $(this);
+                            var value = button.children().children().val();
+                            var valuesSoFar = Object.create(null);
+                            for (var i = 0; i < prevCityArr.length; ++i) {
+                                if (value in valuesSoFar) {
+                                    prevCityArr.pop();
+                                    prevSearches.removeChild(createCard);
+                                    return true;
+                                }
+                                valuesSoFar[value] = true;
+                                localStorage.setItem("value", value);
+                                currentCityApi();
+                            }
+                            return false;
+                        })
+                    }
+                    // a new fetch to the one call api, doing this within the first api due to the lat and longitude
                     fetch(requestOneCall) 
                         .then(function(response2){
                             if (response2.ok) {
                                 response2.json().then(function(data){
+                                    // using onecall api, we can get the uv index
                                     currentCityUV.textContent = "UV Index: " + data.current.uvi;
+                                    // day 1
                                     var day1Time = new Date((timestamp+86400) * 1000).toLocaleDateString("en-US");
                                     var icon1 = data.daily[1].weather[0].icon;
-                                    // day 1
                                     var day1Date = document.getElementById("day1Date");
                                     var day1Icon = document.getElementById("day1Icon");
                                     var day1Temp = document.getElementById("day1Temp");
@@ -93,7 +125,7 @@ function currentCityApi() {
                                 return
                             };
                         });
-                    // change texts to show proper data
+                    // change texts to show proper data of the current city
                     currentCity.innerHTML = data.name + " (" + date + ") " + "<img src='http://openweathermap.org/img/w/" + currentIcon + ".png'></img>";
                     currentCityTemp.textContent = "Temperature: " + data.main.temp + " *F";
                     currentCityHumidity.textContent = "Humidity: " + data.main.humidity + "%";
@@ -101,13 +133,13 @@ function currentCityApi() {
                 });
             }
             else if(!response.ok){
+                // if the response is invalid, then we send an alert to enter a valid city name, also remove it from localstorage and the array
                 alert('Please enter a valid city name')
-                // localStorage.removeItem("value");
-                // prevSearches.removeChild(createCard);
+                localStorage.removeItem("value");
+                prevCityArr.pop();
             } else {
                 return
-            }
-            ;
+            };
         });
 }
 // this will activate the api function upon click and save input into local storage
@@ -115,30 +147,9 @@ searchBtn.addEventListener('click', function(event){
     event.preventDefault();
     var value = cityInput.value.trim();
     localStorage.setItem("value", value);
-    prevCityArr.push(value);
-    console.log(prevCityArr);
     currentCityApi();
-    prevSearch();
     hasDuplicates();
 })
-
-// var displayPrevSearches = function 
-function prevSearch() {
-    prevSearches.innerHTML = "";
-    var noCitySearch = document.getElementById("noCitySearch");
-    if (prevCityArr.length === 0){
-        noCitySearch.textContent = 'No previous searched cities.';
-        prevCityArr = [];
-    } else{
-        for (var i=0;i<prevCityArr.length;i++){
-            var createCard = document.createElement('div');
-            createCard.classList = "card w-100 prevSearch";
-            createCard.innerHTML = "<div class='card-body'><p class='card-text btn'>" + prevCityArr[i].toUpperCase() + "</p></div>"
-            prevSearches.appendChild(createCard);
-            
-        }
-    }
-}
 
 function hasDuplicates() {
     var valuesSoFar = Object.create(null);
