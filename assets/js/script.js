@@ -10,6 +10,7 @@ var currentCityUV = document.getElementById("currentCityUV");
 // variables for prev searches
 var prevSearches = document.getElementById("prevSearches");
 var prevCityArr = [];
+var createCard = document.createElement('div');
 // this will fetch data from serverside api
 function currentCityApi() {
     var value = encodeURIComponent(localStorage.getItem("value"));
@@ -99,26 +100,26 @@ function currentCityApi() {
                     currentCityWind.textContent = "Wind Speed: " + data.wind.speed + " MPH"; 
                 });
             }
-            else {
+            else if(!response.ok){
                 alert('Please enter a valid city name')
-            };
+                // localStorage.removeItem("value");
+                // prevSearches.removeChild(createCard);
+            } else {
+                return
+            }
+            ;
         });
 }
 // this will activate the api function upon click and save input into local storage
 searchBtn.addEventListener('click', function(event){
     event.preventDefault();
-    var value = cityInput.value;
+    var value = cityInput.value.trim();
     localStorage.setItem("value", value);
     prevCityArr.push(value);
-    // if(value === ""){
-    //     alert('Please enter a valid city name')
-    // } else {
-    //     prevCityArr.push(value);
-    // }
     console.log(prevCityArr);
     currentCityApi();
-    
     prevSearch();
+    hasDuplicates();
 })
 
 // var displayPrevSearches = function 
@@ -134,6 +135,20 @@ function prevSearch() {
             createCard.classList = "card w-100 prevSearch";
             createCard.innerHTML = "<div class='card-body'><p class='card-text btn'>" + prevCityArr[i].toUpperCase() + "</p></div>"
             prevSearches.appendChild(createCard);
+            
         }
     }
+}
+
+function hasDuplicates() {
+    var valuesSoFar = Object.create(null);
+    for (var i = 0; i < prevCityArr.length; ++i) {
+        var value = prevCityArr[i];
+        if (value in valuesSoFar) {
+            prevCityArr.pop();
+            return true;
+        }
+        valuesSoFar[value] = true;
+    }
+    return false;
 }
