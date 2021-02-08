@@ -14,7 +14,7 @@ var createCard = document.createElement('div');
 // this will fetch data from serverside api
 function currentCityApi() {
     var value = encodeURIComponent(localStorage.getItem("value"));
-    var requestUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + value + "&appid=" + apiKey + "&units=imperial";
+    var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + value + "&appid=" + apiKey + "&units=imperial";
     fetch(requestUrl)
         .then(function(response){
             if (response.ok){
@@ -72,7 +72,7 @@ function currentCityApi() {
                                     var day1Temp = document.getElementById("day1Temp");
                                     var day1Humid = document.getElementById("day1Humid");
                                     day1Date.textContent = day1Time;
-                                    day1Icon.src = 'http://openweathermap.org/img/w/' + icon1 + ".png";
+                                    day1Icon.src = 'https://openweathermap.org/img/w/' + icon1 + ".png";
                                     day1Temp.textContent = "Temp: " + data.daily[1].temp.day + " *F";
                                     day1Humid.textContent = "Humidity: " + data.daily[1].humidity + "%";
                                     // day 2
@@ -83,7 +83,7 @@ function currentCityApi() {
                                     var day2Temp = document.getElementById("day2Temp");
                                     var day2Humid = document.getElementById("day2Humid");
                                     day2Date.textContent = day2Time;
-                                    day2Icon.src = 'http://openweathermap.org/img/w/' + icon2 + ".png";
+                                    day2Icon.src = 'https://openweathermap.org/img/w/' + icon2 + ".png";
                                     day2Temp.textContent = "Temp: " + data.daily[2].temp.day + " *F";
                                     day2Humid.textContent = "Humidity: " + data.daily[2].humidity + "%";
                                     // day 3
@@ -94,7 +94,7 @@ function currentCityApi() {
                                     var day3Temp = document.getElementById("day3Temp");
                                     var day3Humid = document.getElementById("day3Humid");
                                     day3Date.textContent = day3Time;
-                                    day3Icon.src = 'http://openweathermap.org/img/w/' + icon3 + ".png";
+                                    day3Icon.src = 'https://openweathermap.org/img/w/' + icon3 + ".png";
                                     day3Temp.textContent = "Temp: " + data.daily[3].temp.day + " *F";
                                     day3Humid.textContent = "Humidity: " + data.daily[3].humidity + "%";
                                     // day 4
@@ -105,7 +105,7 @@ function currentCityApi() {
                                     var day4Temp = document.getElementById("day4Temp");
                                     var day4Humid = document.getElementById("day4Humid");
                                     day4Date.textContent = day4Time;
-                                    day4Icon.src = 'http://openweathermap.org/img/w/' + icon4 + ".png";
+                                    day4Icon.src = 'https://openweathermap.org/img/w/' + icon4 + ".png";
                                     day4Temp.textContent = "Temp: " + data.daily[4].temp.day + " *F";
                                     day4Humid.textContent = "Humidity: " + data.daily[4].humidity + "%";
                                     // day 5
@@ -116,7 +116,7 @@ function currentCityApi() {
                                     var day5Temp = document.getElementById("day5Temp");
                                     var day5Humid = document.getElementById("day5Humid");
                                     day5Date.textContent = day5Time;
-                                    day5Icon.src = 'http://openweathermap.org/img/w/' + icon5 + ".png";
+                                    day5Icon.src = 'https://openweathermap.org/img/w/' + icon5 + ".png";
                                     day5Temp.textContent = "Temp: " + data.daily[5].temp.day + " *F";
                                     day5Humid.textContent = "Humidity: " + data.daily[5].humidity + "%";
                                 })
@@ -126,7 +126,7 @@ function currentCityApi() {
                             };
                         });
                     // change texts to show proper data of the current city
-                    currentCity.innerHTML = data.name + " (" + date + ") " + "<img src='http://openweathermap.org/img/w/" + currentIcon + ".png'></img>";
+                    currentCity.innerHTML = data.name + " (" + date + ") " + "<img src='https://openweathermap.org/img/w/" + currentIcon + ".png'></img>";
                     currentCityTemp.textContent = "Temperature: " + data.main.temp + " *F";
                     currentCityHumidity.textContent = "Humidity: " + data.main.humidity + "%";
                     currentCityWind.textContent = "Wind Speed: " + data.wind.speed + " MPH"; 
